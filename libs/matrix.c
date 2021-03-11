@@ -6,7 +6,7 @@ void displayMatrix(float **A, int rows, int columns)
 {
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < columns; j++) {
-            printf("%.2f ", *(*(A+i)+j));
+            printf("%.5f ", *(*(A+i)+j));
         }
         printf("\n");
     }
@@ -153,4 +153,19 @@ float determinant(float **A, int rows, int columns, int position)
         if ((rows+position)%2 == 0) return *(*(A+rows-1)+position-1) * determinant(cofactor(A, rows, columns, rows-1, position-1), rows-1, columns-1, columns-1) + determinant(A, rows, columns, position-1);
         else return (-1) * *(*(A+rows-1)+position-1) * determinant(cofactor(A, rows, columns, rows-1, position-1), rows-1, columns-1, columns-1) + determinant(A, rows, columns, position-1);
     }
+}
+
+float **inverse(float **A, int rows, int columns)
+{
+    float **result = (float**)malloc(rows*sizeof(float*));
+    float det = determinant(A, rows, columns, rows);
+    for (int i = 0; i < rows; i++) {
+        *(result+i) = (float*)malloc(columns*sizeof(float));
+        for (int j = 0; j < columns; j++) {
+            if ((i+j+2)%2 == 0) *(*(result+i)+j) = determinant(cofactor(A, rows, columns, i, j), rows-1, columns-1, rows-1);
+            else *(*(result+i)+j) = -1 * determinant(cofactor(A, rows, columns, i, j), rows-1, columns-1, rows-1);
+        }
+    }
+    result = multiplyBy(result, rows, columns, 1/det);
+    return result;
 }

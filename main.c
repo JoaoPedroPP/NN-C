@@ -42,6 +42,11 @@ int main(int argc, char **argv)
     displayMatrix(CxM, 3, 3);
     printf("-----------------END-----------------\n");
 
+    float **inv = inverse(mult, 3, 3);
+    printf("-----------------Inverse-----------------\n");
+    displayMatrix(inv, 3, 3);
+    printf("-----------------END-----------------\n");
+
     free(matrix);
     free(transp);
     free(mult);
