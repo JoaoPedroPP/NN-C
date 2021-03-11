@@ -5,9 +5,10 @@
 
 int main(int argc, char **argv)
 {
-    int row = 3;
-    int column = 3;
+    int row = 2;
+    int column = 2;
     float **matrix = (float**)malloc(row*sizeof(float*));
+    Matrix m;
 
     for (int i = 0; i < row; i++) {
         *(matrix+i) = (float*)malloc(column*sizeof(float));
@@ -33,7 +34,7 @@ int main(int argc, char **argv)
     printf("-----------------END-----------------\n");
 
     float det = determinant(matrix, 3, 3, 3); // Matrix a se descobrir o determinante, linhas, colunas, mair indice da matriz
-    printf("-----------------Multiply-----------------\n");
+    printf("-----------------Determinant-----------------\n");
     printf("%.2f\n", det);
     printf("-----------------END-----------------\n");
 
