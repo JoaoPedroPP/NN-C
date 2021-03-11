@@ -111,37 +111,37 @@ float** multiplyBy(float **A, int rows, int columns, float constant)
 float** cofactor(float **A, int rows, int columns, int i, int j)
 {
     float **C = (float**)malloc((rows-1)*sizeof(float*));
-    for (int n = 0; n < rows; n++) {
-        while (n < i) {
-            *(C+n) = (float*)malloc((columns-1)*sizeof(float));
-            for (int m = 0; m < columns; m++) {
-                while (m < j) {
-                    *(*(C+n)+m) = *(*(A+n)+m);
-                    break;
-                }
-                while (m > j) {
-                    *(*(C+n)+m-1) = *(*(A+n)+m);
-                    break;
-                }
-            }
-            break;
+    int n = 0;
+    int m = 0;
+    while (n < i) {
+        *(C+n) = (float*)malloc((columns-1)*sizeof(float));
+        m = 0;
+        while (m < j) {
+            *(*(C+n)+m) = *(*(A+n)+m);
+            m++;
         }
-        while (n > i) {
-            *(C+n-1) = (float*)malloc((columns-1)*sizeof(float));
-            for (int m = 0; m < columns; m++) {
-                while (m < j) {
-                    *(*(C+n-1)+m) = *(*(A+n)+m);
-                    break;
-                }
-                while (m > j) {
-                    *(*(C+n-1)+m-1) = *(*(A+n)+m);
-                    break;
-                }
-            }
-            break;
+        m++;
+        while (m < columns) {
+            *(*(C+n)+m-1) = *(*(A+n)+m);
+            m++;
         }
+        n++;
     }
-    // displayMatrix(C, rows-1, columns-1);
+    n++;
+    while (n < rows) {
+        *(C+n-1) = (float*)malloc((columns-1)*sizeof(float));
+        m = 0;
+        while (m < j) {
+            *(*(C+n-1)+m) = *(*(A+n)+m);
+            m++;
+        }
+        m++;
+        while (m < columns) {
+            *(*(C+n-1)+m-1) = *(*(A+n)+m);
+            m++;
+        }
+        n++;
+    }
     return C;
 }
 
