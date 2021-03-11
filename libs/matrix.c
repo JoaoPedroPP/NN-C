@@ -82,15 +82,29 @@ float** multiply(float **m1, int row_1, int column_1, float **m2, int row_2, int
     }
 }
 
+void recursiveMultiplyBy(float **result, float **A, int rows, int columns, float constant)
+{
+    if (rows == 0 || columns == 0) return;
+    else {
+        if (*(result+rows-1) == NULL) *(result+rows-1) = (float*)malloc(columns*sizeof(float));
+        *(*(result+rows-1)+columns-1) = constant * *(*(A+rows-1)+columns-1);
+        recursiveMultiplyBy(result, A, rows, columns-1, constant);
+        recursiveMultiplyBy(result, A, rows-1, columns, constant);
+        return;
+    }
+}
+
 float** multiplyBy(float **A, int rows, int columns, float constant)
 {
     float **B = (float**)malloc(rows*sizeof(float*));
-    for (int i = 0; i < rows; i++) {
-        *(B+i) = (float*)malloc(columns*sizeof(float));
-        for (int j = 0; j < columns; j++) {
-            *(*(B+i)+j) = constant * *(*(A+i)+j);
-        }
-    }
+    recursiveMultiplyBy(B, A, rows, columns, constant);
+    // displayMatrix(B, rows, columns);
+    // for (int i = 0; i < rows; i++) {
+    //     *(B+i) = (float*)malloc(columns*sizeof(float));
+    //     for (int j = 0; j < columns; j++) {
+    //         *(*(B+i)+j) = constant * *(*(A+i)+j);
+    //     }
+    // }
     return B;
 }
 

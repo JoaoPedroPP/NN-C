@@ -32,18 +32,25 @@ int main(int argc, char **argv)
     displayMatrix(mult, row, row);
     printf("-----------------END-----------------\n");
 
-    float det = determinant(mult, 3, 3, 3);
+    float det = determinant(mult, 3, 3, 3); // Matrix a se descobrir o determinante, linhas, colunas, mair indice da matriz
     printf("-----------------Multiply-----------------\n");
     printf("%.2f\n", det);
+    printf("-----------------END-----------------\n");
+
+    float **CxM = multiplyBy(mult, 3, 3, 0);
+    printf("-----------------MultiplyByConstant-----------------\n");
+    displayMatrix(CxM, 3, 3);
     printf("-----------------END-----------------\n");
 
     free(matrix);
     free(transp);
     free(mult);
+    free(CxM);
 
     matrix = NULL;
     transp = NULL;
     mult = NULL;
+    CxM = NULL;
 
     return 0;
 }
