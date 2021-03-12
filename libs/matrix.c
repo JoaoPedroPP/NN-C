@@ -148,36 +148,16 @@ float determinant(Matrix *A, int position)
 
 void inverseRecursive(Matrix *A, int row, int column)
 {
-    // if (row == 0 || column == 0 || 0) return;
+    if (row == 0 || column == 0 || 0) return;
     // else if (column == 0) return;
-    // else {
-        // if (*(A->cells+row-1) == NULL) *(A->cells+row-1) = (float*)malloc(A->columns*sizeof(float));
-        // if ((row+column)%2 == 0) *(*(A->cells+row-1)+column-1) = determinant(cofactor(A, row-1, column-1), A->rows-1);
-        // else *(*(A->cells+row-1)+column-1) = -1 * determinant(cofactor(A, row-1, column-1), A->rows-1);
-        printf("%dx%d\n", row-1, column-1);
-        // *(*(A->cells+row-1)+column-1) = determinant(cofactor(A, row-1, column-1), A->rows-1);
-        // *(*(A->cells+row-1)+column-1) = 1;
-        // printf("%.2f\n", *(*(A->cells+row-1)+column-1));
-        // Matrix *a = cofactor(A, 0, 0);
-        // Matrix *a = cofactor(A, 2, 2);
-        Matrix *B = (Matrix*)malloc(sizeof(Matrix));
-        B->rows = 4;
-        B->columns = 4;
-        for (int i = 0; i < B->rows; i++) {
-        printf("%dx%d\n", B->rows, B->columns);
-            *(B->cells+i) = (float*)malloc(B->columns*sizeof(float));
-            for (int j = 0; j < B->columns; j++) {
-                *(*(B->cells+i)+j) = i+j+2;
-            }
-        }
-        displayMatrix(B);
-        // printf("%dx%d\n", A->rows, A->columns);
-        // float x = determinant(A, A->rows);
-        // printf("%.2f\n", x);
-        // inverseRecursive(A, row, column-1);
-        // inverseRecursive(A, row-1, column);
+    else {
+        if (*(A->cells+row-1) == NULL) *(A->cells+row-1) = (float*)malloc(A->columns*sizeof(float));
+        if ((row+column)%2 == 0) *(*(A->cells+row-1)+column-1) = determinant(cofactor(A, row-1, column-1), A->rows-1);
+        else *(*(A->cells+row-1)+column-1) = -1 * determinant(cofactor(A, row-1, column-1), A->rows-1);
+        inverseRecursive(A, row, column-1);
+        inverseRecursive(A, row-1, column);
         return;
-    // }
+    }
 }
 
 Matrix* inverse(Matrix *A) // not work for 2x2
@@ -189,13 +169,13 @@ Matrix* inverse(Matrix *A) // not work for 2x2
     float det = determinant(A, A->rows);
     printf("det: %.2f\n", det);
     inverseRecursive(result, result->rows, result->columns);
-    for (int i = 0; i < result->rows; i++) {
-        *(result->cells+i) = (float*)malloc(result->columns*sizeof(float));
-        for (int j = 0; j < result->columns; j++) {
-            if ((i+j+2)%2 == 0) *(*(result->cells+i)+j) = determinant(cofactor(A, i, j), result->rows-1);
-            else *(*(result->cells+i)+j) = -1 * determinant(cofactor(A, i, j), result->rows-1);
-        }
-    }
-    result = multiplyBy(result, 1/det);
+    // for (int i = 0; i < result->rows; i++) {
+    //     *(result->cells+i) = (float*)malloc(result->columns*sizeof(float));
+    //     for (int j = 0; j < result->columns; j++) {
+    //         if ((i+j+2)%2 == 0) *(*(result->cells+i)+j) = determinant(cofactor(A, i, j), result->rows-1);
+    //         else *(*(result->cells+i)+j) = -1 * determinant(cofactor(A, i, j), result->rows-1);
+    //     }
+    // }
+    // result = multiplyBy(result, 1/det);
     return result;
 }
