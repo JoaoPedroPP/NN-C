@@ -11,7 +11,7 @@ void displayMatrix(Matrix *A);
 Matrix* transpose(Matrix *m);
 Matrix* multiply(Matrix *A, Matrix *B);
 float determinant(Matrix *A, int position);
-float** multiplyBy(float **A, int rows, int columns, float constant);
+Matrix* multiplyBy(Matrix *A, float constant);
 float **inverse(float **A, int rows, int columns);
 // float** cofactor(float **A, int rows, int columns, int i, int j);
 

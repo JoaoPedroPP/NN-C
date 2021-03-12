@@ -44,10 +44,10 @@ int main(int argc, char **argv)
     printf("%.2f\n", det);
     printf("-----------------END-----------------\n");
 
-    // float **CxM = multiplyBy(mult, 3, 3, 0);
-    // printf("-----------------MultiplyByConstant-----------------\n");
-    // displayMatrix(CxM, 3, 3);
-    // printf("-----------------END-----------------\n");
+    Matrix *CxM = multiplyBy(mult, 2);
+    printf("-----------------MultiplyByConstant-----------------\n");
+    displayMatrix(CxM);
+    printf("-----------------END-----------------\n");
 
     // float **inv = inverse(mult, 3, 3);
     // printf("-----------------Inverse-----------------\n");
@@ -57,12 +57,12 @@ int main(int argc, char **argv)
     free(matrix);
     free(transp);
     free(mult);
-    // free(CxM);
+    free(CxM);
 
     matrix = NULL;
     transp = NULL;
     mult = NULL;
-    // CxM = NULL;
+    CxM = NULL;
 
     return 0;
 }

@@ -69,29 +69,25 @@ Matrix* multiply(Matrix *A, Matrix *B)
     }
 }
 
-void recursiveMultiplyBy(float **result, float **A, int rows, int columns, float constant)
+void recursiveMultiplyBy(Matrix *result, Matrix *A, int rows, int columns, float constant)
 {
     if (rows == 0 || columns == 0) return;
     else {
-        if (*(result+rows-1) == NULL) *(result+rows-1) = (float*)malloc(columns*sizeof(float));
-        *(*(result+rows-1)+columns-1) = constant * *(*(A+rows-1)+columns-1);
+        if (*(result->cells+rows-1) == NULL) *(result->cells+rows-1) = (float*)malloc(result->columns*sizeof(float));
+        *(*(result->cells+rows-1)+columns-1) = constant * *(*(A->cells+rows-1)+columns-1);
         recursiveMultiplyBy(result, A, rows, columns-1, constant);
         recursiveMultiplyBy(result, A, rows-1, columns, constant);
         return;
     }
 }
 
-float** multiplyBy(float **A, int rows, int columns, float constant)
+Matrix* multiplyBy(Matrix *A, float constant)
 {
-    float **B = (float**)malloc(rows*sizeof(float*));
-    recursiveMultiplyBy(B, A, rows, columns, constant);
-    // displayMatrix(B, rows, columns);
-    // for (int i = 0; i < rows; i++) {
-    //     *(B+i) = (float*)malloc(columns*sizeof(float));
-    //     for (int j = 0; j < columns; j++) {
-    //         *(*(B+i)+j) = constant * *(*(A+i)+j);
-    //     }
-    // }
+    Matrix *B = (Matrix*)malloc(sizeof(Matrix));
+    B->rows = A->rows;
+    B->columns = A->columns;
+    B->cells = (float**)malloc(B->rows*sizeof(float*));
+    recursiveMultiplyBy(B, A, A->rows, B->columns, constant);
     return B;
 }
 
@@ -148,9 +144,12 @@ float determinant(Matrix *A, int position)
     }
 }
 
-// float **inverse(float **A, int rows, int columns) // not work for 2x2
+// Matrix* inverse(Matrix *A) // not work for 2x2
 // {
-//     float **result = (float**)malloc(rows*sizeof(float*));
+//     Matrix *result = (Matrix*)malloc(sizeof(Matrix));
+//     result->rows = A->rows;
+//     result->columns = A->columns;
+//     result->cells = (float**)malloc(result->rows*sizeof(float*));
 //     float det = determinant(A, rows, columns, rows);
 //     for (int i = 0; i < rows; i++) {
 //         *(result+i) = (float*)malloc(columns*sizeof(float));
