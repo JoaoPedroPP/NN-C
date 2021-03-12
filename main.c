@@ -49,20 +49,22 @@ int main(int argc, char **argv)
     displayMatrix(CxM);
     printf("-----------------END-----------------\n");
 
-    // float **inv = inverse(mult, 3, 3);
-    // printf("-----------------Inverse-----------------\n");
-    // displayMatrix(inv, 3, 3);
-    // printf("-----------------END-----------------\n");
+    Matrix *inv = inverse(mult);
+    printf("-----------------Inverse-----------------\n");
+    displayMatrix(inv);
+    printf("-----------------END-----------------\n");
 
     free(matrix);
     free(transp);
     free(mult);
     free(CxM);
+    free(inv);
 
     matrix = NULL;
     transp = NULL;
     mult = NULL;
     CxM = NULL;
+    inv = NULL;
 
     return 0;
 }

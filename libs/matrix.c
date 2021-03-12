@@ -144,20 +144,20 @@ float determinant(Matrix *A, int position)
     }
 }
 
-// Matrix* inverse(Matrix *A) // not work for 2x2
-// {
-//     Matrix *result = (Matrix*)malloc(sizeof(Matrix));
-//     result->rows = A->rows;
-//     result->columns = A->columns;
-//     result->cells = (float**)malloc(result->rows*sizeof(float*));
-//     float det = determinant(A, rows, columns, rows);
-//     for (int i = 0; i < rows; i++) {
-//         *(result+i) = (float*)malloc(columns*sizeof(float));
-//         for (int j = 0; j < columns; j++) {
-//             if ((i+j+2)%2 == 0) *(*(result+i)+j) = determinant(cofactor(A, rows, columns, i, j), rows-1, columns-1, rows-1);
-//             else *(*(result+i)+j) = -1 * determinant(cofactor(A, rows, columns, i, j), rows-1, columns-1, rows-1);
-//         }
-//     }
-//     result = multiplyBy(result, rows, columns, 1/det);
-//     return result;
-// }
+Matrix* inverse(Matrix *A) // not work for 2x2
+{
+    Matrix *result = (Matrix*)malloc(sizeof(Matrix));
+    result->rows = A->rows;
+    result->columns = A->columns;
+    result->cells = (float**)malloc(result->rows*sizeof(float*));
+    float det = determinant(A, A->rows);
+    for (int i = 0; i < result->rows; i++) {
+        *(result->cells+i) = (float*)malloc(result->columns*sizeof(float));
+        for (int j = 0; j < result->columns; j++) {
+            if ((i+j+2)%2 == 0) *(*(result->cells+i)+j) = determinant(cofactor(A, i, j), result->rows-1);
+            else *(*(result->cells+i)+j) = -1 * determinant(cofactor(A, i, j), result->rows-1);
+        }
+    }
+    result = multiplyBy(result, 1/det);
+    return result;
+}
