@@ -10,7 +10,7 @@ int main(int argc, char **argv)
     // float **matrix = (float**)malloc(row*sizeof(float*));
     Matrix *matrix = (Matrix*)malloc(sizeof(Matrix));
     matrix->rows = 3;
-    matrix->columns = 2;
+    matrix->columns = 3;
     matrix->cells = (float**)malloc(matrix->rows*sizeof(float*));
 
     for (int i = 0; i < matrix->rows; i++) {
@@ -39,10 +39,10 @@ int main(int argc, char **argv)
     displayMatrix(mult);
     printf("-----------------END-----------------\n");
 
-    // float det = determinant(matrix, 3, 3, 3); // Matrix a se descobrir o determinante, linhas, colunas, mair indice da matriz
-    // printf("-----------------Determinant-----------------\n");
-    // printf("%.2f\n", det);
-    // printf("-----------------END-----------------\n");
+    float det = determinant(matrix, matrix->rows); // Matrix a se descobrir o determinante, linhas, colunas, mair indice da matriz
+    printf("-----------------Determinant-----------------\n");
+    printf("%.2f\n", det);
+    printf("-----------------END-----------------\n");
 
     // float **CxM = multiplyBy(mult, 3, 3, 0);
     // printf("-----------------MultiplyByConstant-----------------\n");

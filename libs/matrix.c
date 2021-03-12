@@ -95,36 +95,39 @@ float** multiplyBy(float **A, int rows, int columns, float constant)
     return B;
 }
 
-float** cofactor(float **A, int rows, int columns, int i, int j)
+Matrix* cofactor(Matrix *A, int i, int j)
 {
-    float **C = (float**)malloc((rows-1)*sizeof(float*));
+    Matrix *C = (Matrix*)malloc(sizeof(Matrix));
+    C->rows = A->rows-1;
+    C->columns = A->columns-1;
+    C->cells = (float**)malloc(C->rows*sizeof(float*));
     int n = 0;
     int m = 0;
     while (n < i) {
-        *(C+n) = (float*)malloc((columns-1)*sizeof(float));
+        *(C->cells+n) = (float*)malloc(C->columns*sizeof(float));
         m = 0;
         while (m < j) {
-            *(*(C+n)+m) = *(*(A+n)+m);
+            *(*(C->cells+n)+m) = *(*(A->cells+n)+m);
             m++;
         }
         m++;
-        while (m < columns) {
-            *(*(C+n)+m-1) = *(*(A+n)+m);
+        while (m < A->columns) {
+            *(*(C->cells+n)+m-1) = *(*(A->cells+n)+m);
             m++;
         }
         n++;
     }
     n++;
-    while (n < rows) {
-        *(C+n-1) = (float*)malloc((columns-1)*sizeof(float));
+    while (n < A->rows) {
+        *(C->cells+n-1) = (float*)malloc(C->columns*sizeof(float));
         m = 0;
         while (m < j) {
-            *(*(C+n-1)+m) = *(*(A+n)+m);
+            *(*(C->cells+n-1)+m) = *(*(A->cells+n)+m);
             m++;
         }
         m++;
-        while (m < columns) {
-            *(*(C+n-1)+m-1) = *(*(A+n)+m);
+        while (m < A->columns) {
+            *(*(C->cells+n-1)+m-1) = *(*(A->cells+n)+m);
             m++;
         }
         n++;
@@ -132,27 +135,30 @@ float** cofactor(float **A, int rows, int columns, int i, int j)
     return C;
 }
 
-float determinant(float **A, int rows, int columns, int position)
+float determinant(Matrix *A, int position)
 {
-    if (rows == columns && rows == 2) return **A * *(*(A+rows-1)+columns-1) - *(*(A)+columns-1) * **(A+rows-1);
-    else if (position < 1 || rows < 0) return 0;
+    if (A->rows != A->columns) return 0;
     else {
-        if ((rows+position)%2 == 0) return *(*(A+rows-1)+position-1) * determinant(cofactor(A, rows, columns, rows-1, position-1), rows-1, columns-1, columns-1) + determinant(A, rows, columns, position-1);
-        else return (-1) * *(*(A+rows-1)+position-1) * determinant(cofactor(A, rows, columns, rows-1, position-1), rows-1, columns-1, columns-1) + determinant(A, rows, columns, position-1);
+        if (A->rows == 2) return **(A->cells) * *(*(A->cells+A->rows-1)+A->columns-1) - *(*(A->cells)+A->columns-1) * **(A->cells+A->rows-1);
+        else if (position < 1 || A->rows < 0) return 0;
+        else {
+            if ((A->rows+position)%2 == 0) return *(*(A->cells+A->rows-1)+position-1) * determinant(cofactor(A, A->rows-1, position-1), A->columns-1) + determinant(A, position-1);
+            else return (-1) * *(*(A->cells+A->rows-1)+position-1) * determinant(cofactor(A, A->rows-1, position-1), A->columns-1) + determinant(A, position-1);
+        }
     }
 }
 
-float **inverse(float **A, int rows, int columns) // not work for 2x2
-{
-    float **result = (float**)malloc(rows*sizeof(float*));
-    float det = determinant(A, rows, columns, rows);
-    for (int i = 0; i < rows; i++) {
-        *(result+i) = (float*)malloc(columns*sizeof(float));
-        for (int j = 0; j < columns; j++) {
-            if ((i+j+2)%2 == 0) *(*(result+i)+j) = determinant(cofactor(A, rows, columns, i, j), rows-1, columns-1, rows-1);
-            else *(*(result+i)+j) = -1 * determinant(cofactor(A, rows, columns, i, j), rows-1, columns-1, rows-1);
-        }
-    }
-    result = multiplyBy(result, rows, columns, 1/det);
-    return result;
-}
+// float **inverse(float **A, int rows, int columns) // not work for 2x2
+// {
+//     float **result = (float**)malloc(rows*sizeof(float*));
+//     float det = determinant(A, rows, columns, rows);
+//     for (int i = 0; i < rows; i++) {
+//         *(result+i) = (float*)malloc(columns*sizeof(float));
+//         for (int j = 0; j < columns; j++) {
+//             if ((i+j+2)%2 == 0) *(*(result+i)+j) = determinant(cofactor(A, rows, columns, i, j), rows-1, columns-1, rows-1);
+//             else *(*(result+i)+j) = -1 * determinant(cofactor(A, rows, columns, i, j), rows-1, columns-1, rows-1);
+//         }
+//     }
+//     result = multiplyBy(result, rows, columns, 1/det);
+//     return result;
+// }

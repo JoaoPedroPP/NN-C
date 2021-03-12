@@ -10,7 +10,7 @@ typedef struct  {
 void displayMatrix(Matrix *A);
 Matrix* transpose(Matrix *m);
 Matrix* multiply(Matrix *A, Matrix *B);
-float determinant(float **A, int rows, int columns,  int position);
+float determinant(Matrix *A, int position);
 float** multiplyBy(float **A, int rows, int columns, float constant);
 float **inverse(float **A, int rows, int columns);
 // float** cofactor(float **A, int rows, int columns, int i, int j);
