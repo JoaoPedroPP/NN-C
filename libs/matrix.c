@@ -54,26 +54,14 @@ void recursiveMultiply(Matrix *M, Matrix *m1, Matrix *m2, int row, int column, i
     }
 }
 
-// Matrix* multiply(Matrix *A, int row_1, int column_1, Matrix *m2, int row_2, int column_2)
 Matrix* multiply(Matrix *A, Matrix *B)
 {
     if (A->columns == B->rows) {
-        // float **result = (float**)malloc(row_1*sizeof(float*));
         Matrix *result = (Matrix*)malloc(sizeof(Matrix));
         result->rows = A->rows;
         result->columns = B->columns;
         result->cells = (float**)malloc(result->rows*sizeof(float*));
         recursiveMultiply(result, A, B, A->rows, B->columns, B->rows);
-        // displayMatrix(result, row_1, column_2);
-        // for (int i = 0; i < row_1; i++) {
-        //     *(result+i) = (float*)malloc(column_2*sizeof(float));
-        //     for (int j = 0; j < column_2; j++) {
-        //         *(*(result + i) + j) = 0;
-        //         for (int m = 0; m < column_1; m++) {
-        //             *(*(result + i) + j) = *(*(result + i) + j) + *(*(m1+i)+m) * *(*(m2+m)+j);
-        //         }
-        //     }
-        // }
         return result;
     }
     else {
