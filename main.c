@@ -34,10 +34,10 @@ int main(int argc, char **argv)
     displayMatrix(transp);
     printf("-----------------END-----------------\n");
 
-    // float **mult = multiply(matrix, row, column, transp, column, row);
-    // printf("-----------------Multiply-----------------\n");
-    // displayMatrix(mult, row, row);
-    // printf("-----------------END-----------------\n");
+    Matrix *mult = multiply(matrix, transp);
+    printf("-----------------Multiply-----------------\n");
+    displayMatrix(mult);
+    printf("-----------------END-----------------\n");
 
     // float det = determinant(matrix, 3, 3, 3); // Matrix a se descobrir o determinante, linhas, colunas, mair indice da matriz
     // printf("-----------------Determinant-----------------\n");
@@ -55,13 +55,13 @@ int main(int argc, char **argv)
     // printf("-----------------END-----------------\n");
 
     free(matrix);
-    // free(transp);
-    // free(mult);
+    free(transp);
+    free(mult);
     // free(CxM);
 
     matrix = NULL;
-    // transp = NULL;
-    // mult = NULL;
+    transp = NULL;
+    mult = NULL;
     // CxM = NULL;
 
     return 0;

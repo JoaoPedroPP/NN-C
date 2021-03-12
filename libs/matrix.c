@@ -6,7 +6,7 @@ void displayMatrix(Matrix *A)
 {
     for (int i = 0; i < A->rows; i++) {
         for (int j = 0; j < A->columns; j++) {
-            printf("%.5f ", *(*(A->cells+i)+j));
+            printf("%.2f ", *(*(A->cells+i)+j));
         }
         printf("\n");
     }
@@ -35,20 +35,18 @@ Matrix* transpose(Matrix *A)
     return T;
 }
 
-float recursiveMultiplyElement(float **m1, float **m2, int row, int column, int n)
+float recursiveMultiplyElement(Matrix *m1, Matrix *m2, int row, int column, int n)
 {
-    if (n == 1) return *(*(m1+row-1)+n-1) * *(*(m2+n-1)+column-1);
-    return recursiveMultiplyElement(m1, m2, row, column, n-1) + *(*(m1+row-1)+n-1) * *(*(m2+n-1)+column-1);
+    if (n == 1) return *(*(m1->cells+row-1)+n-1) * *(*(m2->cells+n-1)+column-1);
+    return recursiveMultiplyElement(m1, m2, row, column, n-1) + *(*(m1->cells+row-1)+n-1) * *(*(m2->cells+n-1)+column-1);
 }
 
-void recursiveMultiply(float **M, float **m1, float **m2, int row, int column, int n)
+void recursiveMultiply(Matrix *M, Matrix *m1, Matrix *m2, int row, int column, int n)
 {
     if (row == 0 || column == 0) return;
     else {
-        if (*(M+row-1) == NULL) *(M+row-1) = (float*)malloc(column*sizeof(float));
-        *(*(M+row-1)+column-1) = recursiveMultiplyElement(m1, m2, row, column, n); // WORKS!!!
-        // *(*(M+row-1)+column-1) = *(*(M+row-1)+column-1) + *(*(m1+row-1)+n-1) * *(*(m2+n-1)+column-1);
-        // recursiveMultiply(M, m1, m2, row, column, n-1);
+        if (*(M->cells+row-1) == NULL) *(M->cells+row-1) = (float*)malloc(column*sizeof(float));
+        *(*(M->cells+row-1)+column-1) = recursiveMultiplyElement(m1, m2, row, column, n); // WORKS!!!
         recursiveMultiply(M, m1, m2, row, column-1, n);
         recursiveMultiply(M, m1, m2, row-1, column, n);
         return;
@@ -56,11 +54,16 @@ void recursiveMultiply(float **M, float **m1, float **m2, int row, int column, i
     }
 }
 
-float** multiply(float **m1, int row_1, int column_1, float **m2, int row_2, int column_2)
+// Matrix* multiply(Matrix *A, int row_1, int column_1, Matrix *m2, int row_2, int column_2)
+Matrix* multiply(Matrix *A, Matrix *B)
 {
-    if (column_1 == row_2) {
-        float **result = (float**)malloc(row_1*sizeof(float*));
-        recursiveMultiply(result, m1, m2, row_1, column_2, row_2);
+    if (A->columns == B->rows) {
+        // float **result = (float**)malloc(row_1*sizeof(float*));
+        Matrix *result = (Matrix*)malloc(sizeof(Matrix));
+        result->rows = A->rows;
+        result->columns = B->columns;
+        result->cells = (float**)malloc(result->rows*sizeof(float*));
+        recursiveMultiply(result, A, B, A->rows, B->columns, B->rows);
         // displayMatrix(result, row_1, column_2);
         // for (int i = 0; i < row_1; i++) {
         //     *(result+i) = (float*)malloc(column_2*sizeof(float));
