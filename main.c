@@ -39,7 +39,7 @@ int main(int argc, char **argv)
     displayMatrix(mult);
     printf("-----------------END-----------------\n");
 
-    float det = determinant(matrix, matrix->rows); // Matrix a se descobrir o determinante, linhas, colunas, mair indice da matriz
+    float det = determinant(mult, matrix->rows); // Matrix a se descobrir o determinante, linhas, colunas, mair indice da matriz
     printf("-----------------Determinant-----------------\n");
     printf("%.2f\n", det);
     printf("-----------------END-----------------\n");
