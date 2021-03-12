@@ -10,7 +10,7 @@ int main(int argc, char **argv)
     // float **matrix = (float**)malloc(row*sizeof(float*));
     Matrix *matrix = (Matrix*)malloc(sizeof(Matrix));
     matrix->rows = 3;
-    matrix->columns = 3;
+    matrix->columns = 2;
     matrix->cells = (float**)malloc(matrix->rows*sizeof(float*));
 
     for (int i = 0; i < matrix->rows; i++) {
@@ -29,10 +29,10 @@ int main(int argc, char **argv)
     displayMatrix(matrix);
     printf("-----------------END-----------------\n");
 
-    // float **transp = transpose(matrix, row, column);
-    // printf("-----------------Transpose-----------------\n");
-    // displayMatrix(transp, column, row);
-    // printf("-----------------END-----------------\n");
+    Matrix *transp = transpose(matrix);
+    printf("-----------------Transpose-----------------\n");
+    displayMatrix(transp);
+    printf("-----------------END-----------------\n");
 
     // float **mult = multiply(matrix, row, column, transp, column, row);
     // printf("-----------------Multiply-----------------\n");

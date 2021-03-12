@@ -12,31 +12,27 @@ void displayMatrix(Matrix *A)
     }
 }
 
-void recursiveTranspose(float **T, float **m, int column, int row)
+void recursiveTranspose(Matrix *T, Matrix *m, int column, int row)
 {
     if (row == 0 || column == 0) return;
     else {
-        if (*(T+row-1) == NULL) *(T+row-1) = (float*)malloc(column*sizeof(float));
-        *(*(T+row-1)+column-1) = *(*(m+column-1)+row-1);
+        if (*(T->cells+row-1) == NULL) *(T->cells+row-1) = (float*)malloc(T->columns*sizeof(float));
+        *(*(T->cells+row-1)+column-1) = *(*(m->cells+column-1)+row-1);
         recursiveTranspose(T, m, column-1, row);
         recursiveTranspose(T, m, column, row-1);
         return;
     }
 }
 
-float** transpose(float **m, int row, int column)
+Matrix* transpose(Matrix *A)
 {
-    float **transpose = (float**)malloc(column*sizeof(float*));
-    recursiveTranspose(transpose, m, row, column);
-    // displayMatrix(transpose, column, row);
-    // for (int i = 0; i < column; i++) {
-    //     *(transpose+i) = (float*)malloc(row*sizeof(float));
-    //     for (int j = 0; j < row; j++) {
-    //         *(*(transpose+i)+j) = *(*(m+j)+i);
-    //     }
-    // }
+    Matrix *T = (Matrix*)malloc(sizeof(Matrix*));
+    T->rows = A->columns;
+    T->columns = A->rows;
+    T->cells = (float**)malloc(T->rows*sizeof(float*));
+    recursiveTranspose(T, A, A->rows, A->columns);
 
-    return transpose;
+    return T;
 }
 
 float recursiveMultiplyElement(float **m1, float **m2, int row, int column, int n)

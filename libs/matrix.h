@@ -8,7 +8,7 @@ typedef struct  {
 } Matrix;
 
 void displayMatrix(Matrix *A);
-float** transpose(float **m, int row, int column);
+Matrix* transpose(Matrix *m);
 float** multiply(float **m1, int row_1, int column_1, float **m2, int row_2, int column_2);
 float determinant(float **A, int rows, int columns,  int position);
 float** multiplyBy(float **A, int rows, int columns, float constant);
