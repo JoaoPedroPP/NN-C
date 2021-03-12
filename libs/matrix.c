@@ -2,11 +2,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-void displayMatrix(float **A, int rows, int columns)
+void displayMatrix(Matrix *A)
 {
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < columns; j++) {
-            printf("%.5f ", *(*(A+i)+j));
+    for (int i = 0; i < A->rows; i++) {
+        for (int j = 0; j < A->columns; j++) {
+            printf("%.5f ", *(*(A->cells+i)+j));
         }
         printf("\n");
     }
@@ -155,7 +155,7 @@ float determinant(float **A, int rows, int columns, int position)
     }
 }
 
-float **inverse(float **A, int rows, int columns)
+float **inverse(float **A, int rows, int columns) // not work for 2x2
 {
     float **result = (float**)malloc(rows*sizeof(float*));
     float det = determinant(A, rows, columns, rows);
