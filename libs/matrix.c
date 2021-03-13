@@ -14,12 +14,12 @@ void displayMatrix(Matrix *A)
 
 void recursiveTranspose(Matrix *T, Matrix *m, int column, int row)
 {
-    if (row == 0 || column == 0) return;
+    if (row == 0) return;
+    else if (column == 0) recursiveTranspose(T, m, T->columns, row-1);
     else {
         if (*(T->cells+row-1) == NULL) *(T->cells+row-1) = (float*)malloc(T->columns*sizeof(float));
         *(*(T->cells+row-1)+column-1) = *(*(m->cells+column-1)+row-1);
         recursiveTranspose(T, m, column-1, row);
-        recursiveTranspose(T, m, column, row-1);
         return;
     }
 }
@@ -43,12 +43,12 @@ float recursiveMultiplyElement(Matrix *m1, Matrix *m2, int row, int column, int 
 
 void recursiveMultiply(Matrix *M, Matrix *m1, Matrix *m2, int row, int column, int n)
 {
-    if (row == 0 || column == 0) return;
+    if (row == 0) return;
+    else if (column == 0) recursiveMultiply(M, m1, m2, row-1, M->columns, n);
     else {
         if (*(M->cells+row-1) == NULL) *(M->cells+row-1) = (float*)malloc(column*sizeof(float));
         *(*(M->cells+row-1)+column-1) = recursiveMultiplyElement(m1, m2, row, column, n); // WORKS!!!
         recursiveMultiply(M, m1, m2, row, column-1, n);
-        recursiveMultiply(M, m1, m2, row-1, column, n);
         return;
 
     }
@@ -71,12 +71,12 @@ Matrix* multiply(Matrix *A, Matrix *B)
 
 void recursiveMultiplyBy(Matrix *result, Matrix *A, int rows, int columns, float constant)
 {
-    if (rows == 0 || columns == 0) return;
+    if (rows == 0) return;
+    else if (columns == 0) recursiveMultiplyBy(result, A, rows-1, result->columns, constant);
     else {
         if (*(result->cells+rows-1) == NULL) *(result->cells+rows-1) = (float*)malloc(result->columns*sizeof(float));
         *(*(result->cells+rows-1)+columns-1) = constant * *(*(A->cells+rows-1)+columns-1);
         recursiveMultiplyBy(result, A, rows, columns-1, constant);
-        recursiveMultiplyBy(result, A, rows-1, columns, constant);
         return;
     }
 }
@@ -151,12 +151,10 @@ void inverseRecursive(Matrix *A, Matrix *B, int row, int column)
     if (row == 0) return;
     else if (column == 0) inverseRecursive(A, B, row-1, A->columns);
     else {
-        printf("%dx%d\n", row, column);
         if (*(A->cells+row-1) == NULL) *(A->cells+row-1) = (float*)malloc(A->columns*sizeof(float));
         if ((row+column)%2 == 0) *(*(A->cells+row-1)+column-1) = determinant(cofactor(B, row-1, column-1), A->rows-1);
         else *(*(A->cells+row-1)+column-1) = -1 * determinant(cofactor(B, row-1, column-1), A->rows-1);
         inverseRecursive(A, B, row, column-1);
-        // inverseRecursive(A, B, row-1, column);
         return;
     }
 }
