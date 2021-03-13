@@ -148,13 +148,15 @@ float determinant(Matrix *A, int position)
 
 void inverseRecursive(Matrix *A, Matrix *B, int row, int column)
 {
-    if (row == 0 || column == 0) return;
+    if (row == 0) return;
+    else if (column == 0) inverseRecursive(A, B, row-1, A->columns);
     else {
+        printf("%dx%d\n", row, column);
         if (*(A->cells+row-1) == NULL) *(A->cells+row-1) = (float*)malloc(A->columns*sizeof(float));
         if ((row+column)%2 == 0) *(*(A->cells+row-1)+column-1) = determinant(cofactor(B, row-1, column-1), A->rows-1);
         else *(*(A->cells+row-1)+column-1) = -1 * determinant(cofactor(B, row-1, column-1), A->rows-1);
         inverseRecursive(A, B, row, column-1);
-        inverseRecursive(A, B, row-1, column);
+        // inverseRecursive(A, B, row-1, column);
         return;
     }
 }
