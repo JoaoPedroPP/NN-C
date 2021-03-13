@@ -5,22 +5,18 @@
 
 int main(int argc, char **argv)
 {
-    // int row = 2;
-    // int column = 2;
-    // float **matrix = (float**)malloc(row*sizeof(float*));
     Matrix *matrix = (Matrix*)malloc(sizeof(Matrix));
-    matrix->rows = 6;
-    matrix->columns = 6;
+    matrix->rows = 3;
+    matrix->columns = 3;
     matrix->cells = (float**)malloc(matrix->rows*sizeof(float*));
 
     for (int i = 0; i < matrix->rows; i++) {
-        // *(matrix+i) = (float*)malloc(column*sizeof(float));
         *(matrix->cells+i) = (float*)malloc(matrix->columns*sizeof(float));
         for (int j = 0; j < matrix->columns; j++) {
-            // if (((i+1)+(j+1))%2 == 0) *(*(matrix+i)+j) = 2*i+j;
-            // else *(*(matrix+i)+j) = (1+i)*(1+j);
-            if (((i+1)+(j+1))%2 == 0) *(*(matrix->cells+i)+j) = 2*i+j;
-            else *(*(matrix->cells+i)+j) = (1+i)*(1+j);
+            // if (((i+1)+(j+1))%2 == 0) *(*(matrix->cells+i)+j) = 2*i+j;
+            // else *(*(matrix->cells+i)+j) = (1+i)*(1+j);
+            if (i == j) *(*(matrix->cells+i)+j) = 1;
+            else *(*(matrix->cells+i)+j) = 0;
         }
     }
 
@@ -54,17 +50,24 @@ int main(int argc, char **argv)
     displayMatrix(inv);
     printf("-----------------END-----------------\n");
 
+    Matrix *I = multiply(mult, inv);
+    printf("-----------------Indentity-----------------\n");
+    displayMatrix(I);
+    printf("-----------------END-----------------\n");
+
     free(matrix);
     free(transp);
     free(mult);
     free(CxM);
     free(inv);
+    free(I);
 
     matrix = NULL;
     transp = NULL;
     mult = NULL;
     CxM = NULL;
     inv = NULL;
+    I = NULL;
 
     return 0;
 }
