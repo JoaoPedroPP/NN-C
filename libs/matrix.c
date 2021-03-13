@@ -175,7 +175,7 @@ void inverseRecursive(Matrix *A, Matrix *B, int row, int column)
     }
 }
 
-Matrix* inverse(Matrix *A) // not work for 2x2
+Matrix* inverse(Matrix *A)
 {
     Matrix *result;
     if (A->rows == 2) {
