@@ -15,5 +15,6 @@ Matrix* multiplyBy(Matrix *A, float constant);
 Matrix* inverse(Matrix *A);
 Matrix* SolveSystem(Matrix *A, Matrix *B);
 Matrix* sum(Matrix *A, Matrix *B);
+Matrix* sub(Matrix *A, Matrix *B);
 
 #endif

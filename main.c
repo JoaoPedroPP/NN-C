@@ -77,6 +77,11 @@ int main(int argc, char **argv)
     displayMatrix(Sum);
     printf("-----------------END-----------------\n");
 
+    Matrix *Sub = sub(matrix, matrix);
+    printf("-----------------Sum-----------------\n");
+    displayMatrix(Sub);
+    printf("-----------------END-----------------\n");
+
     free(matrix);
     free(transp);
     free(mult);
@@ -85,6 +90,7 @@ int main(int argc, char **argv)
     free(I);
     free(LS);
     free(Sum);
+    free(Sub);
 
     matrix = NULL;
     transp = NULL;
@@ -94,6 +100,7 @@ int main(int argc, char **argv)
     I = NULL;
     LS = NULL;
     Sum = NULL;  
+    Sub = NULL;  
 
     return 0;
 }

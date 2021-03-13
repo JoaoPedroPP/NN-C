@@ -223,3 +223,8 @@ Matrix* sum(Matrix *A, Matrix *B)
     }
     else return NULL;
 }
+
+Matrix* sub(Matrix *A, Matrix *B)
+{
+    return sum(A, multiplyBy(B, -1));
+}
