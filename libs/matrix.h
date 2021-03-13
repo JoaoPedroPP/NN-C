@@ -13,6 +13,6 @@ Matrix* multiply(Matrix *A, Matrix *B);
 float determinant(Matrix *A, int position);
 Matrix* multiplyBy(Matrix *A, float constant);
 Matrix* inverse(Matrix *A);
-// float** cofactor(float **A, int rows, int columns, int i, int j);
+Matrix* SolveSystem(Matrix *A, Matrix *B);
 
 #endif

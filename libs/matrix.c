@@ -195,3 +195,7 @@ Matrix* inverse(Matrix *A)
     else return NULL;
 }
 
+Matrix* SolveSystem(Matrix *A, Matrix *B)
+{
+    return multiply(inverse(A), B);
+}
