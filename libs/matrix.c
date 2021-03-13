@@ -146,16 +146,15 @@ float determinant(Matrix *A, int position)
     }
 }
 
-void inverseRecursive(Matrix *A, int row, int column)
+void inverseRecursive(Matrix *A, Matrix *B, int row, int column)
 {
-    if (row == 0 || column == 0 || 0) return;
-    // else if (column == 0) return;
+    if (row == 0 || column == 0) return;
     else {
         if (*(A->cells+row-1) == NULL) *(A->cells+row-1) = (float*)malloc(A->columns*sizeof(float));
-        if ((row+column)%2 == 0) *(*(A->cells+row-1)+column-1) = determinant(cofactor(A, row-1, column-1), A->rows-1);
-        else *(*(A->cells+row-1)+column-1) = -1 * determinant(cofactor(A, row-1, column-1), A->rows-1);
-        inverseRecursive(A, row, column-1);
-        inverseRecursive(A, row-1, column);
+        if ((row+column)%2 == 0) *(*(A->cells+row-1)+column-1) = determinant(cofactor(B, row-1, column-1), A->rows-1);
+        else *(*(A->cells+row-1)+column-1) = -1 * determinant(cofactor(B, row-1, column-1), A->rows-1);
+        inverseRecursive(A, B, row, column-1);
+        inverseRecursive(A, B, row-1, column);
         return;
     }
 }
@@ -167,15 +166,6 @@ Matrix* inverse(Matrix *A) // not work for 2x2
     result->columns = A->columns;
     result->cells = (float**)malloc(result->rows*sizeof(float*));
     float det = determinant(A, A->rows);
-    printf("det: %.2f\n", det);
-    inverseRecursive(result, result->rows, result->columns);
-    // for (int i = 0; i < result->rows; i++) {
-    //     *(result->cells+i) = (float*)malloc(result->columns*sizeof(float));
-    //     for (int j = 0; j < result->columns; j++) {
-    //         if ((i+j+2)%2 == 0) *(*(result->cells+i)+j) = determinant(cofactor(A, i, j), result->rows-1);
-    //         else *(*(result->cells+i)+j) = -1 * determinant(cofactor(A, i, j), result->rows-1);
-    //     }
-    // }
-    // result = multiplyBy(result, 1/det);
-    return result;
+    inverseRecursive(result, A, result->rows, result->columns);
+    return multiplyBy(result, 1/det);
 }
