@@ -177,17 +177,21 @@ void inverseRecursive(Matrix *A, Matrix *B, int row, int column)
 
 Matrix* inverse(Matrix *A)
 {
-    Matrix *result;
-    if (A->rows == 2) {
-        result = cofactor2x2(A);
+    if (A->rows == A->columns) {
+        Matrix *result;
+        if (A->rows == 2) {
+            result = cofactor2x2(A);
+        }
+        else {
+            result = (Matrix*)malloc(sizeof(Matrix));
+            result->rows = A->rows;
+            result->columns = A->columns;
+            result->cells = (float**)malloc(result->rows*sizeof(float*));
+            inverseRecursive(result, A, result->rows, result->columns);
+        }
+        float det = determinant(A, A->rows);
+        return multiplyBy(result, 1/det);
     }
-    else {
-        result = (Matrix*)malloc(sizeof(Matrix));
-        result->rows = A->rows;
-        result->columns = A->columns;
-        result->cells = (float**)malloc(result->rows*sizeof(float*));
-        inverseRecursive(result, A, result->rows, result->columns);
-    }
-    float det = determinant(A, A->rows);
-    return multiplyBy(result, 1/det);
+    else return NULL;
 }
+
