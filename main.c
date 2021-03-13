@@ -9,8 +9,8 @@ int main(int argc, char **argv)
     // int column = 2;
     // float **matrix = (float**)malloc(row*sizeof(float*));
     Matrix *matrix = (Matrix*)malloc(sizeof(Matrix));
-    matrix->rows = 3;
-    matrix->columns = 3;
+    matrix->rows = 2;
+    matrix->columns = 2;
     matrix->cells = (float**)malloc(matrix->rows*sizeof(float*));
 
     for (int i = 0; i < matrix->rows; i++) {

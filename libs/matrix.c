@@ -132,9 +132,25 @@ Matrix* cofactor(Matrix *A, int i, int j)
     return C;
 }
 
+Matrix* cofactor2x2(Matrix *A)
+{
+    Matrix *C = (Matrix*)malloc(sizeof(Matrix));
+    C->rows = A->rows;
+    C->columns = A->columns;
+    C->cells = (float**)malloc(C->rows*sizeof(float*));
+    *(C->cells) = (float*)malloc(C->columns*sizeof(float));
+    *(C->cells+1) = (float*)malloc(C->columns*sizeof(float));
+
+    **C->cells = *(*(A->cells+1)+1); // 1x1 = 2x2
+    **(C->cells+1) = -1 * *(*(A->cells)+1); // 2x1 = 1x2
+    *(*(C->cells)+1) = -1 * **(A->cells+1); // 1x2 = 2x1
+    *(*(C->cells+1)+1) = **(A->cells); // 2x2 = 1x1
+
+    return C;
+}
+
 float determinant(Matrix *A, int position)
 {
-    // displayMatrix(A);
     if (A->rows != A->columns) return 0;
     else {
         if (A->rows == 2) return **(A->cells) * *(*(A->cells+A->rows-1)+A->columns-1) - *(*(A->cells)+A->columns-1) * **(A->cells+A->rows-1);
@@ -161,11 +177,17 @@ void inverseRecursive(Matrix *A, Matrix *B, int row, int column)
 
 Matrix* inverse(Matrix *A) // not work for 2x2
 {
-    Matrix *result = (Matrix*)malloc(sizeof(Matrix));
-    result->rows = A->rows;
-    result->columns = A->columns;
-    result->cells = (float**)malloc(result->rows*sizeof(float*));
+    Matrix *result;
+    if (A->rows == 2) {
+        result = cofactor2x2(A);
+    }
+    else {
+        result = (Matrix*)malloc(sizeof(Matrix));
+        result->rows = A->rows;
+        result->columns = A->columns;
+        result->cells = (float**)malloc(result->rows*sizeof(float*));
+        inverseRecursive(result, A, result->rows, result->columns);
+    }
     float det = determinant(A, A->rows);
-    inverseRecursive(result, A, result->rows, result->columns);
     return multiplyBy(result, 1/det);
 }
