@@ -72,6 +72,11 @@ int main(int argc, char **argv)
     displayMatrix(LS);
     printf("-----------------END-----------------\n");
 
+    Matrix *Sum = sum(matrix, matrix);
+    printf("-----------------Sum-----------------\n");
+    displayMatrix(Sum);
+    printf("-----------------END-----------------\n");
+
     free(matrix);
     free(transp);
     free(mult);
@@ -79,6 +84,7 @@ int main(int argc, char **argv)
     free(inv);
     free(I);
     free(LS);
+    free(Sum);
 
     matrix = NULL;
     transp = NULL;
@@ -86,7 +92,8 @@ int main(int argc, char **argv)
     CxM = NULL;
     inv = NULL;
     I = NULL;
-    LS = NULL;  
+    LS = NULL;
+    Sum = NULL;  
 
     return 0;
 }

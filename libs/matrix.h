@@ -14,5 +14,6 @@ float determinant(Matrix *A, int position);
 Matrix* multiplyBy(Matrix *A, float constant);
 Matrix* inverse(Matrix *A);
 Matrix* SolveSystem(Matrix *A, Matrix *B);
+Matrix* sum(Matrix *A, Matrix *B);
 
 #endif

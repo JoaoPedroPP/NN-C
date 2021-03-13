@@ -199,3 +199,27 @@ Matrix* SolveSystem(Matrix *A, Matrix *B)
 {
     return multiply(inverse(A), B);
 }
+
+void sumRecurvise(Matrix *C, Matrix *A, Matrix *B, int row, int column)
+{
+    if (row == 0) return;
+    else if (column == 0) sumRecurvise(C, A, B, row-1, C->columns);
+    else {
+        if (*(C->cells+row-1) == NULL) *(C->cells+row-1) = (float*)malloc(C->columns*sizeof(float));
+        *(*(C->cells+row-1)+column-1) = *(*(A->cells+row-1)+column-1) + *(*(B->cells+row-1)+column-1);
+        sumRecurvise(C, A, B, row, column-1);
+    }
+}
+
+Matrix* sum(Matrix *A, Matrix *B)
+{
+    if (A->rows == B->rows && A->columns == B->columns) {
+        Matrix *result = (Matrix*)malloc(sizeof(Matrix));
+        result->rows = A->rows;
+        result->columns = A->columns;
+        result->cells = (float**)malloc(result->rows*sizeof(float*));
+        sumRecurvise(result, A, B, result->rows, result->columns);
+        return result;
+    }
+    else return NULL;
+}
