@@ -1,1 +1,1 @@
-add_library(libs matrix.c)
+add_library(libs matrix.c neural.c)
