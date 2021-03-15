@@ -74,3 +74,19 @@ Network* CreateNetwork()
 
     return NN;
 }
+
+Matrix* fowardPropagation(Layer *L)
+{
+    if (L->next == NULL) return transpose(L->W);
+    else return multiply(fowardPropagation(L->next), transpose(L->W));
+}
+
+Matrix* fowardPropagation2(Layer *L)
+{
+    Matrix *W = transpose(L->W);
+    while (L->next != NULL) {
+        W = multiply(transpose(L->next->W), W);
+        L = L->next;
+    }
+    return W;
+}

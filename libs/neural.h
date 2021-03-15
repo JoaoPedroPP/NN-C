@@ -19,5 +19,6 @@ typedef struct Network {
 Network* CreateNetwork();
 void addLayer(Network *N, int input, int output);
 void displayNetwork(Layer *L);
+Matrix* fowardPropagation(Layer *L);
 
 #endif
