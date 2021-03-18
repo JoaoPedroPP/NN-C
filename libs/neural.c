@@ -16,9 +16,23 @@ void displayLayers(Layer *L)
     printf("-------------------------------------------\n");
 }
 
+void displayErrorLayers(Layer *L)
+{
+    printf("------------------Layer %d------------------\n", L->layer);
+    for (int i = 0; i < L->errors->rows; i++) {
+        for (int j = 0; j < L->errors->columns; j++) {
+            printf("%.2f ", *(*(L->errors->cells+i)+j));
+        }
+        printf("\n");
+    }
+    printf("-------------------------------------------\n");
+}
+
 void displayNetwork(Layer *L)
 {
+    if (L == NULL) return;
     displayLayers(L);
+    // displayErrorLayers(L);
     displayNetwork(L->next);
 }
 
@@ -44,6 +58,18 @@ Layer* createLayer(int input, int output)
     L->W->rows = input;
     L->W->columns = output;
     initializeNeurons(L->W, L->W->rows, L->W->columns);
+
+    L->errors = (Matrix*)malloc(sizeof(Matrix));
+    L->errors->rows = input;
+    L->errors->columns = 1;
+    L->errors->cells = (float**)malloc(L->errors->rows*sizeof(float*));
+    for (int i = 0; i < L->errors->rows; i++) {
+        *(L->errors->cells+i) = (float*)malloc(sizeof(float));
+        // for (int j = 0; j < L->errors->columns; j++) {
+        //     *(*(L->errors->cells+i)+j) = 1;
+        // }
+    }
+    // displayErrorLayers(L);
 
     return L;
 }
@@ -81,12 +107,19 @@ Matrix* fowardPropagation(Layer *L)
     else return multiply(fowardPropagation(L->next), transpose(L->W));
 }
 
-Matrix* fowardPropagation2(Layer *L)
+Matrix* errorPropagation(Layer *L)
 {
-    Matrix *W = transpose(L->W);
-    while (L->next != NULL) {
-        W = multiply(transpose(L->next->W), W);
-        L = L->next;
+    if (L->before == NULL) return L->errors;
+    else return multiply(errorPropagation(L->before), L->errors);
+}
+
+void calcErrors(Layer *L, Matrix *Z, Matrix *Y)
+{
+    if (L->next == NULL) {
+        L->errors = multiply(L->W, sub(Z, Y));
+        return;
     }
-    return W;
+    else {
+        L->errors = multiply(L->W, L->next->errors);
+    }
 }

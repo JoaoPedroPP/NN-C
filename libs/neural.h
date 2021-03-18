@@ -8,6 +8,7 @@ typedef struct Layer {
     struct Layer *next;
     struct Layer *before;
     Matrix *W;
+    Matrix *errors;
 } Layer;
 
 typedef struct Network {
@@ -20,5 +21,6 @@ Network* CreateNetwork();
 void addLayer(Network *N, int input, int output);
 void displayNetwork(Layer *L);
 Matrix* fowardPropagation(Layer *L);
+void calcErrors(Layer *L, Matrix *Z, Matrix *Y);
 
 #endif
